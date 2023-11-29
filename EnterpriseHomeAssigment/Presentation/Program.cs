@@ -1,4 +1,6 @@
 using Data;
+using Data.Interface;
+using Data.Repositorys;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Presentation.Data;
@@ -21,7 +23,13 @@ namespace Presentation
                 .AddEntityFrameworkStores<AirlineDbContext>();
             builder.Services.AddControllersWithViews();
 
+
+            builder.Services.AddScoped<IFlightDbRepository, FlightDbRepository>();
+            builder.Services.AddScoped<ITicketDbRepository, TicketDbRepository>();
+
+
             var app = builder.Build();
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

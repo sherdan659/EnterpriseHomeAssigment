@@ -34,6 +34,12 @@
           "System.Reflection.Emit": "4.6.0",
           "System.Reflection.TypeExtensions": "4.3.0",
           "System.Xml.XmlDocument": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.5/Castle.Core.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.4.1.0"
+          }
         }
       },
       "Humanizer/2.14.1": {
@@ -1239,6 +1245,12 @@
         "dependencies": {
           "Castle.Core": "4.4.1",
           "Microsoft.EntityFrameworkCore": "6.0.22"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.EntityFrameworkCore.Proxies.dll": {
+            "assemblyVersion": "6.0.22.0",
+            "fileVersion": "6.0.2223.40907"
+          }
         }
       },
       "Microsoft.EntityFrameworkCore.Relational/6.0.22": {

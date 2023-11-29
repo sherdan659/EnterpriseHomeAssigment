@@ -8,6 +8,7 @@ namespace Domain.Models
 {
     public class Flight
     {
+        //replaca of the database that gets and sets   (cannot manipulate)
         public int Id { get; set; }
         public int Rows { get; set; }
         public int Columns { get; set; }
