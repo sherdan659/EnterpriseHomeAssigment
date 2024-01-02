@@ -14,45 +14,60 @@ namespace Data.Repositorys
 
         private readonly AirlineDbContext _context;
 
+
         public FlightDbRepository(AirlineDbContext context)
         {
-            // The contents in the database needs to default to null   (if left empty it will expect a input and crash or cause corruption)
-            // The model database needs to be the same as a normal database    empty -> Null by default
-            _context = context;   
+            _context = context;
         }
 
-        // connects via id from the interface
-        public IEnumerable<Flight> GetAllFlights()
+
+        public async Task<IEnumerable<Flight>> GetFlights()
         {
-            return _context.Flights.ToList();
+            return await _context.Flights.ToListAsync();
         }
 
-        public Flight GetFlightById(int id)
+
+        public async Task<Flight> GetFlight(int id)
         {
-            return _context.Flights.Find(id);
+            return await _context.Flights.FindAsync(id);
         }
 
-        public void AddFlight(Flight flight)
+
+        public async Task AddFlight(Flight flight)
         {
             _context.Flights.Add(flight);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdateFlight(Flight flight)
+
+        public async Task UpdateFlight(Flight flight)
         {
             _context.Flights.Update(flight);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteFlight(int id)
+
+        public async Task DeleteFlight(int id)
         {
-            var flight = _context.Flights.Find(id);
+            var flight = await _context.Flights.FindAsync(id);
             if (flight != null)
             {
                 _context.Flights.Remove(flight);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
+
+        public async Task<bool> IsFlightFullyBooked(int flightId)
+        {
+            var flight = await _context.Flights.FindAsync(flightId);
+            if (flight == null)
+            {
+                return false; 
+            }
+            var totalseats = flight.Rows * flight.Columns; 
+            var bookedTicketsCount = await _context.Tickets.CountAsync(t => t.FlightIdFK == flightId && !t.Cancelled);
+            return bookedTicketsCount >= totalseats;
+        }
     }
 }

@@ -9,8 +9,8 @@ namespace Data.Interface
 {
     public interface ITicketDbRepository
     {
-        Ticket BookTicket(Ticket ticket);
-        void CancelTicket(int ticketId);
-        IEnumerable<Ticket> GetTicketsByFlight(int flightId);
+        Task<Ticket> Book(Ticket ticket);
+        Task Cancel(int ticketId);
+        Task<IEnumerable<Ticket>> GetTickets(int flightId);
     }
 }

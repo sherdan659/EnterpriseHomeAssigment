@@ -13,15 +13,17 @@ namespace Data.Repositorys
     {
         private readonly AirlineDbContext _context;
 
+
         public TicketDbRepository(AirlineDbContext context)
         {
             _context = context;
         }
 
-        public Ticket BookTicket(Ticket ticket)
+
+        public async Task<Ticket> Book(Ticket ticket)
         {
-            var existingTicket = _context.Tickets
-                .FirstOrDefault(t => t.FlightIdFK == ticket.FlightIdFK && t.Row == ticket.Row && t.Column == ticket.Column);
+            var existingTicket = await _context.Tickets
+                .FirstOrDefaultAsync(t => t.FlightIdFK == ticket.FlightIdFK && t.Row == ticket.Row && t.Column == ticket.Column);
 
             if (existingTicket != null)
             {
@@ -29,27 +31,29 @@ namespace Data.Repositorys
             }
 
             _context.Tickets.Add(ticket);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return ticket;
         }
 
-        public void CancelTicket(int ticketId)
+
+        public async Task Cancel(int ticketId)
         {
-            var ticket = _context.Tickets.Find(ticketId);
+            var ticket = await _context.Tickets.FindAsync(ticketId);
             if (ticket == null)
             {
                 throw new InvalidOperationException("Ticket not found.");
             }
 
             ticket.Cancelled = true;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public IEnumerable<Ticket> GetTicketsByFlight(int flightId)
+
+        public async Task<IEnumerable<Ticket>> GetTickets(int flightId)
         {
-            return _context.Tickets
+            return await _context.Tickets
                 .Where(t => t.FlightIdFK == flightId)
-                .ToList();
+                .ToListAsync();
         }
     }
 }
